@@ -17,7 +17,7 @@ p = pcolor(data);
 p.EdgeColor = 'none';
 
 %% DMD analysis
-r = 100;
+r = 40;
 [Phicol,Lambda,b] = DMD(data(:,1:end-1),data(:,2:end),r);
 
 % Figure 2
@@ -35,4 +35,5 @@ for j=1:T
 end
 s = pcolor(real(ModeDynamics));
 s.EdgeColor = 'none';
+colorbar
 %% Koopman Analysis
