@@ -20,4 +20,4 @@ Meilan can edit the LV function to actually use the Lotka-Volterra equations ins
 Meanwhile, Thariq and David can work with the dummy data for DMD/Koopman stuff until the Lotka-Volterra equations are ready.
 
 @Meilan: Please make sure to maintain the format of the output of the LV() function so that it doesn't break Thariq's or David's code when you merge your code to the repository. 
-I suggest we all make a new git branch to work on our part of the project and merge it to the main branch when it's ready to avoid conflicts.
+I suggest we all make a new git branch to work on our part of the project and merge it to the main branch when it's ready to avoid conflicts. (The DMD code is in the DMD branch, for example. I'm ironing out some issues before merging.)
