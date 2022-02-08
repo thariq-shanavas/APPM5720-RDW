@@ -21,3 +21,5 @@ Meanwhile, Thariq and David can work with the dummy data for DMD/Koopman stuff u
 
 @Meilan: Please make sure to maintain the format of the output of the LV() function so that it doesn't break Thariq's or David's code when you merge your code to the repository. 
 I suggest we all make a new git branch to work on our part of the project and merge it to the main branch when it's ready to avoid conflicts. (The DMD code is in the DMD branch, for example. I'm ironing out some issues before merging.)
+
+02/08 Update: Added a simple implementation of the volterra equations as I ran into some anomalies with the dummy data, which I discussed with Prof. Bortz on Thursday. I cannot proceed with the DMD code without more realistic data, so working with actual Lotka-Volterra equations for now.
