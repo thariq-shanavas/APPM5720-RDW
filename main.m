@@ -1,5 +1,20 @@
-clear
+% Author - Thariq Shanavas
+% thariq.shanavas@colorado.edu
+clear; clf; close all;
+addpath('./optdmd');
 %% Generating data using Lotka-Volterra Equations
+
+% Data parameters
+T = 1000;   %Time in seconds
+res = 360;  %Resolution in theta (i.e, 360 degress divided into this many steps)
+
+% number of eigenmodes for DMD
+r = 50; % Try 80 if you have a fast computer. Lower this if your computer is slow-ish.
+noise = 0;  %Add some noise by setting this to 0.1
+%Size of the wavefront in degrees
+wave_width = 30; % Try a narrower wave at 10 degrees
+
+
 
 % Volterra equation parameters
 alpha = 0.07;
@@ -7,26 +22,26 @@ beta = 0.13;
 delta = 0.10;
 gamma = 0.05;
 
-% Data size
-T = 1000;   %Number of time steps
-res = 720;  %Resolution in x (i.e, 360 degress divided into this many steps)
 
-data = LV(alpha,beta,delta,gamma,T,res);
-data = data/max(max(data));
 
-%% making everything complex with norm 1
-% I have no idea why this works, but it makes the DMD code much better
-data_imag = sqrt(1-data.^2);
-data = data + 1i*data_imag;
+[data,centers] = LV(alpha,beta,delta,gamma,T,res,wave_width,noise);
+ts = linspace(0,T-1,T);
 
 %%
+
+figure()
 subplot(2,2,1);
 p = pcolor(real(data));
 p.EdgeColor = 'none';
 colorbar
+title('Rotating detonation waves using Lotka-Volterra eqs');
 %% DMD analysis
-r = 80;
+
+
 [Phicol,Lambda,b] = DMD(data(:,1:end-1),data(:,2:end),r);
+for j=1:T
+    ModeDynamics(:,j) = Phicol*Lambda^(j-1)*b;
+end
 
 % Figure 2
 subplot(2,2,2);
@@ -36,12 +51,20 @@ p1 = plot(real(diag(Lambda)),imag(diag(Lambda)),'o', ...
 set(p1(1),'MarkerSize',10);
 xlabel('Real part');ylabel('Imaginary part');axis equal
 legend('Eigenvalues','Unit Circle');
+title('Eigenvalues of DMD (book version)')
+
 % Figure 3
 subplot(2,2,3);
-for j=1:T
-    ModeDynamics(:,j) = Phicol*Lambda^(j-1)*b;
-end
 s = pcolor(real(ModeDynamics));
 s.EdgeColor = 'none';
 colorbar
-%% Koopman Analysis
+title('Reconstructed data using DMD (book version)');
+
+% Figure 4 - Using optDMD library
+subplot(2,2,4);
+[w,Lambda,b] = optdmd(data,ts,r,2);
+ModeDynamics = w*diag(b)*exp(Lambda*ts);
+s = pcolor(real(ModeDynamics));
+s.EdgeColor = 'none';
+colorbar
+title('Reconstructed data using optdmd');
