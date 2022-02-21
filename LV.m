@@ -20,12 +20,6 @@ ts = linspace(0,T-1,T);
 plot(ts,offsets(1)*ones(size(ts)),'-r',ts,offsets(2)+res/15*centers(:,1),'-r',ts,offsets(3)+res/15*centers(:,2),'-r')
 ylim([0 res])
 %% making everything complex with norm 1
-% Intuition: At approx. x=90 and t=0, the function has a small real part. At x=90 and
-% t=78, the function has a nonzero real part. If there was initially a complex component
-% at (90,0) there would only need to be a phase change to some mode 
-% between t=0 and t=78 as opposed to needing constructive addition at t=78
-% and destructive addition at t=0 between two (or more) modes if the original data was purely real
-% This improves the performance of both versions of DMD
 
 data = data/max(max(data));
 data_imag = sqrt(1-data.^2);
